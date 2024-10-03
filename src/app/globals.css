@@ -19,7 +19,9 @@ body {
 .alert-exit {
   opacity: 0; 
 }
-
+.stars{
+  color:green
+}
 
 @layer utilities {
   .text-balance {

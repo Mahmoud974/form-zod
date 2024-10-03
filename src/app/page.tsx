@@ -23,6 +23,8 @@ export default function ContactPage() {
       formUser.parse(data);
       setUser(data);
       console.log("Form data:", data);
+      console.log(user);
+
       reset();
       setShowAlert(true);
 
@@ -64,7 +66,10 @@ export default function ContactPage() {
           <div className="flex md:flex-row flex-col md:space-x-4 mb-10">
             <div className="md:w-1/2">
               <label htmlFor="firstName" className="block font-medium">
-                First Name <span aria-hidden="true">*</span>
+                First Name{" "}
+                <span aria-hidden="true" className="stars">
+                  *
+                </span>
               </label>
               <input
                 {...register("firstname", {
@@ -89,7 +94,7 @@ export default function ContactPage() {
             <div className="md:w-1/2 md:mt-0 mt-6 w-full">
               <label htmlFor="lastName" className="block font-medium">
                 Last Name{" "}
-                <span aria-hidden="true" className="text-red-900 ">
+                <span aria-hidden="true" className="stars">
                   *
                 </span>
               </label>
@@ -114,7 +119,10 @@ export default function ContactPage() {
 
           <div className="mb-4 md:mt-0 -mt-6">
             <label htmlFor="email" className="block font-medium">
-              Email Address <span aria-hidden="true">*</span>
+              Email Address{" "}
+              <span aria-hidden="true" className="stars">
+                *
+              </span>
             </label>
             <input
               {...register("email", {
@@ -140,7 +148,10 @@ export default function ContactPage() {
             <legend className="sr-only">Enquiry Type</legend>
             <div>
               <label htmlFor="enquiryType" className="">
-                Query Type <span aria-hidden="true">*</span>
+                Query Type{" "}
+                <span aria-hidden="true" className="stars">
+                  *
+                </span>
               </label>
               <div className="flex md:flex-row flex-col md:space-x-4 space-y-4 md:space-y-0 mt-3">
                 <div
@@ -185,7 +196,10 @@ export default function ContactPage() {
 
           <div className="mb-4">
             <label htmlFor="message" className="block font-medium">
-              Message <span aria-hidden="true">*</span>
+              Message{" "}
+              <span aria-hidden="true" className="stars">
+                *
+              </span>
             </label>
             <textarea
               {...register("message", { required: "Message is required" })}
@@ -213,7 +227,10 @@ export default function ContactPage() {
                 className="cursor-pointer"
               />
               <label htmlFor="consent" className="ml-2 cursor-pointer">
-                I consent to being contacted by the team
+                I consent to being contacted by the team{" "}
+                <span aria-hidden="true" className="stars">
+                  *
+                </span>
               </label>
             </div>
             <ErrorMessage
