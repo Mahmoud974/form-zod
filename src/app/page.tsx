@@ -13,7 +13,7 @@ export default function ContactPage() {
   } = useForm<Inputs>({
     resolver: zodResolver(formUser),
   });
-  const [user, serUser] = useState();
+  const [user, serUser] = useState<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     formUser.parse(data);
     serUser(data);
