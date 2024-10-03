@@ -4,27 +4,48 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
 import { formUser, Inputs } from "./schemas/userSchema";
+import { AlertDemo } from "@/components/AlertDemo";
 
 export default function ContactPage() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(formUser),
   });
-  const [user, serUser] = useState<Inputs>();
+  const [user, setUser] = useState<Inputs>();
+  const [showAlert, setShowAlert] = useState(false);
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    formUser.parse(data);
-    serUser(data);
-    console.log(data);
+    try {
+      formUser.parse(data);
+      setUser(data);
+      console.log("Form data:", data);
+      reset();
+      setShowAlert(true);
+
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Validation failed:", error);
+    }
   };
-  console.log(user);
 
   return (
-    <main className="flex h-screen justify-center items-center ">
+    <main className="flex md:mx-0 mx-9 flex-col h-screen justify-center items-center ">
+      <section className="">
+        <div
+          className={`alert ${showAlert ? "alert-enter" : "alert-exit"}`}
+          style={{ display: showAlert ? "block" : "none" }}
+        >
+          <AlertDemo />
+        </div>
+      </section>
       <section
-        className="container mx-auto max-w-xl shadow-md bg-white rounded-xl flex justify-center items-center text-gray-700 py-12 px-8"
+        className=" container md:mx-auto max-w-xl shadow-md bg-white rounded-xl flex justify-center items-center text-gray-700 py-12 px-8"
         role="main"
         aria-labelledby="contact-heading"
       >
@@ -40,8 +61,8 @@ export default function ContactPage() {
             Contact Us
           </h1>
 
-          <div className="flex space-x-4 mb-10">
-            <div className="w-1/2">
+          <div className="flex md:flex-row flex-col md:space-x-4 mb-10">
+            <div className="md:w-1/2">
               <label htmlFor="firstName" className="block font-medium">
                 First Name <span aria-hidden="true">*</span>
               </label>
@@ -65,9 +86,12 @@ export default function ContactPage() {
               />
             </div>
 
-            <div className="w-1/2">
+            <div className="md:w-1/2 md:mt-0 mt-6 w-full">
               <label htmlFor="lastName" className="block font-medium">
-                Last Name <span aria-hidden="true">*</span>
+                Last Name{" "}
+                <span aria-hidden="true" className="text-red-900 ">
+                  *
+                </span>
               </label>
               <input
                 {...register("lastname", { required: "Last name is required" })}
@@ -88,7 +112,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-4 md:mt-0 -mt-6">
             <label htmlFor="email" className="block font-medium">
               Email Address <span aria-hidden="true">*</span>
             </label>
@@ -112,13 +136,13 @@ export default function ContactPage() {
             />
           </div>
 
-          <fieldset className="mb-4">
+          <fieldset className="mb-4 ">
             <legend className="sr-only">Enquiry Type</legend>
             <div>
               <label htmlFor="enquiryType" className="">
                 Query Type <span aria-hidden="true">*</span>
               </label>
-              <div className="flex space-x-4 mt-3">
+              <div className="flex md:flex-row flex-col md:space-x-4 space-y-4 md:space-y-0 mt-3">
                 <div
                   className={`flex items-center border-2 ${
                     errors.enquiryType ? "border-red-600" : "border-gray-300"
@@ -131,7 +155,7 @@ export default function ContactPage() {
                     type="radio"
                     id="generalEnquiry"
                     value="general"
-                    className="border-2 border-gray-300 p-2 rounded-full cursor-pointer"
+                    className="border-2 border-gray-300 p-2 rounded-xl cursor-pointer"
                   />
                   <p className="ml-2">General Enquiry</p>
                 </div>
@@ -148,7 +172,7 @@ export default function ContactPage() {
                     type="radio"
                     id="supportEnquiry"
                     value="support"
-                    className="border-2 border-gray-300 p-2 rounded-full cursor-pointer"
+                    className="border-2 border-gray-300 p-2 rounded-xl cursor-pointer"
                   />
                   <p className="ml-2">Support Enquiry</p>
                 </div>
@@ -166,7 +190,7 @@ export default function ContactPage() {
             <textarea
               {...register("message", { required: "Message is required" })}
               id="message"
-              className={`border-2 p-2 rounded-md w-full ${
+              className={`border-2 p-2 rounded-md md:h-28 h-60 w-full ${
                 errors.message ? "border-red-600" : "border-gray-300"
               }`}
               aria-required="true"
@@ -188,7 +212,7 @@ export default function ContactPage() {
                 id="consent"
                 className="cursor-pointer"
               />
-              <label htmlFor="consent" className="ml-2">
+              <label htmlFor="consent" className="ml-2 cursor-pointer">
                 I consent to being contacted by the team
               </label>
             </div>
